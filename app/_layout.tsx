@@ -1,59 +1,57 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
+import '../global.css'
+import { Stack, useRouter, useSegments } from 'expo-router'
+import * as SplashScreen from 'expo-splash-screen'
+import { useEffect } from 'react'
+import { AuthProvider, useAuth } from '@/context/AuthContext'
 
-import { useColorScheme } from '@/components/useColorScheme';
+SplashScreen.preventAutoHideAsync()
 
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from 'expo-router';
+function AuthGate() {
+  const { isLoading, isAuthenticated, player } = useAuth()
+  const segments = useSegments()
+  const router = useRouter()
 
-export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
-};
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
-
-export default function RootLayout() {
-  const [loaded, error] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-    ...FontAwesome.font,
-  });
-
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
-  useEffect(() => {
-    if (error) throw error;
-  }, [error]);
+  // Player has a usable pass if they have at least one ACTIVE or UPCOMING pass
+  const hasPass = player?.playerSeasonPasses?.some(
+    p => p.status === 'ACTIVE' || p.status === 'UPCOMING'
+  ) ?? false
 
   useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
+    if (isLoading) return
+    SplashScreen.hideAsync()
+
+    const inAuthGroup = segments[0] === '(tabs)'
+    const inOAuth = segments[0] === 'oauth'
+    const inScan = segments[0] === 'scan'
+    const inOnboarding = segments[0] === 'onboarding'
+
+    if (!isAuthenticated) {
+      // Not logged in — send to login unless already on a public route
+      if (inAuthGroup || inOnboarding) router.replace('/login')
+    } else if (!hasPass) {
+      // Logged in but no pass — send to onboarding, block tabs
+      if (!inOnboarding) router.replace('/onboarding')
+    } else {
+      // Fully active player — send to tabs
+      if (!inAuthGroup && !inOAuth && !inScan) router.replace('/(tabs)/')
     }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
-
-  return <RootLayoutNav />;
-}
-
-function RootLayoutNav() {
-  const colorScheme = useColorScheme();
+  }, [isLoading, isAuthenticated, hasPass, segments])
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-      </Stack>
-    </ThemeProvider>
-  );
+    <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: '#0c0c0c' } }}>
+      <Stack.Screen name="(tabs)" />
+      <Stack.Screen name="login" />
+      <Stack.Screen name="onboarding" />
+      <Stack.Screen name="oauth/callback" />
+      <Stack.Screen name="scan" />
+    </Stack>
+  )
+}
+
+export default function RootLayout() {
+  return (
+    <AuthProvider>
+      <AuthGate />
+    </AuthProvider>
+  )
 }
