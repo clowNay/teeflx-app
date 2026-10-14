@@ -2,7 +2,7 @@
   "expo": {
     "name": "TEEFLX",
     "slug": "teeflx-app",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "teeflx",
@@ -46,6 +46,12 @@
       "eas": {
         "projectId": "1f8c13c1-fa75-4ece-b080-9780b412fcff"
       }
+    },
+    "updates": {
+      "url": "https://u.expo.dev/1f8c13c1-fa75-4ece-b080-9780b412fcff"
+    },
+    "runtimeVersion": {
+      "policy": "fingerprint"
     }
   }
 }
