@@ -1,6 +1,7 @@
 import { Tabs } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { FLX } from '@/lib/theme'
 
 type IoniconsName = React.ComponentProps<typeof Ionicons>['name']
 
@@ -9,7 +10,7 @@ function TabIcon({ name, focused }: { name: IoniconsName; focused: boolean }) {
     <Ionicons
       name={focused ? name : (`${name}-outline` as IoniconsName)}
       size={24}
-      color={focused ? '#16a34a' : '#6b7280'}
+      color={focused ? FLX.gold : FLX.mistDim}
     />
   )
 }
@@ -21,8 +22,8 @@ export default function TabLayout() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: '#111111',
-          borderTopColor: '#1f1f1f',
+          backgroundColor: FLX.green,
+          borderTopColor: FLX.line,
           borderTopWidth: 1,
           paddingTop: 6,
           height: 60 + insets.bottom,
@@ -33,8 +34,8 @@ export default function TabLayout() {
           fontWeight: '600',
           marginBottom: 4,
         },
-        tabBarActiveTintColor: '#16a34a',
-        tabBarInactiveTintColor: '#6b7280',
+        tabBarActiveTintColor: FLX.gold,
+        tabBarInactiveTintColor: FLX.mistDim,
       }}
     >
       <Tabs.Screen

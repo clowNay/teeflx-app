@@ -3,6 +3,7 @@ import { View, Text, ScrollView, TextInput, Pressable, RefreshControl, Image } f
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Ionicons } from '@expo/vector-icons'
 import { api } from '@/lib/api'
+import { FLX } from '@/lib/theme'
 
 interface ClubListing {
   id: string
@@ -51,30 +52,30 @@ export default function ClubsScreen() {
   )
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#0c0c0c' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: FLX.green }}>
       {/* Header */}
       <View style={{ paddingHorizontal: 20, paddingTop: 20, paddingBottom: 12 }}>
         <Text style={{ color: '#fff', fontSize: 24, fontWeight: 'bold', marginBottom: 4 }}>Samarbejdsklubber</Text>
-        <Text style={{ color: '#9ca3af', fontSize: 14, marginBottom: 16 }}>
-          Spil i alle disse klubber med dit TEEFLX-kort
+        <Text style={{ color: FLX.mistDim, fontSize: 14, marginBottom: 16 }}>
+          Spil på alle disse samarbejdsklubber med dit TEEFLX-kort
         </Text>
         <View style={{
           flexDirection: 'row', alignItems: 'center',
-          backgroundColor: '#111', borderRadius: 12,
+          backgroundColor: FLX.card, borderRadius: 12,
           paddingHorizontal: 14, paddingVertical: 10,
           gap: 10,
         }}>
-          <Ionicons name="search-outline" size={18} color="#6b7280" />
+          <Ionicons name="search-outline" size={18} color={FLX.mistDim} />
           <TextInput
             value={search}
             onChangeText={setSearch}
-            placeholder="Søg efter klub..."
-            placeholderTextColor="#6b7280"
+            placeholder="Søg efter samarbejdsklub..."
+            placeholderTextColor={FLX.mistDim}
             style={{ flex: 1, color: '#fff', fontSize: 15 }}
           />
           {search.length > 0 && (
             <Pressable onPress={() => setSearch('')}>
-              <Ionicons name="close-circle" size={18} color="#6b7280" />
+              <Ionicons name="close-circle" size={18} color={FLX.mistDim} />
             </Pressable>
           )}
         </View>
@@ -82,33 +83,33 @@ export default function ClubsScreen() {
 
       <ScrollView
         contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 32 }}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#16a34a" />}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={FLX.gold} />}
       >
         {loading ? (
           <View style={{ paddingTop: 60, alignItems: 'center' }}>
-            <Text style={{ color: '#6b7280' }}>Henter klubber…</Text>
+            <Text style={{ color: FLX.mistDim }}>Henter samarbejdsklubber…</Text>
           </View>
         ) : filtered.length === 0 ? (
           <View style={{ paddingTop: 60, alignItems: 'center' }}>
-            <Text style={{ color: '#6b7280', fontSize: 16 }}>Ingen klubber fundet</Text>
+            <Text style={{ color: FLX.mistDim, fontSize: 16 }}>Ingen samarbejdsklubber fundet</Text>
           </View>
         ) : (
           filtered.map(listing => (
             <View
               key={listing.id}
               style={{
-                backgroundColor: '#111',
+                backgroundColor: FLX.card,
                 borderRadius: 16,
                 marginBottom: 8,
                 overflow: 'hidden',
                 borderWidth: listing.isNew ? 1.5 : 0,
-                borderColor: '#16a34a',
+                borderColor: FLX.gold,
               }}
             >
               {/* New club banner */}
               {listing.isNew && (
                 <View style={{
-                  backgroundColor: '#16a34a',
+                  backgroundColor: FLX.gold,
                   paddingHorizontal: 14,
                   paddingVertical: 7,
                   flexDirection: 'row',
@@ -116,7 +117,7 @@ export default function ClubsScreen() {
                   gap: 6,
                 }}>
                   <Text style={{ fontSize: 12 }}>✨</Text>
-                  <Text style={{ color: '#fff', fontSize: 12, fontWeight: 'bold', letterSpacing: 0.5 }}>
+                  <Text style={{ color: FLX.green, fontSize: 12, fontWeight: 'bold', letterSpacing: 0.5 }}>
                     NY SAMARBEJDSKLUB
                   </Text>
                 </View>
@@ -126,7 +127,7 @@ export default function ClubsScreen() {
               {listing.coverImageUrl && (
                 <Image
                   source={{ uri: listing.coverImageUrl }}
-                  style={{ width: '100%', height: 110, backgroundColor: '#1a1a1a' }}
+                  style={{ width: '100%', height: 110, backgroundColor: FLX.card }}
                   resizeMode="cover"
                 />
               )}
@@ -136,7 +137,7 @@ export default function ClubsScreen() {
                 {(listing.logoUrl ?? listing.club.logoUrl) ? (
                   <View style={{
                     width: 44, height: 44, borderRadius: 12,
-                    backgroundColor: '#1a1a1a',
+                    backgroundColor: FLX.card,
                     alignItems: 'center', justifyContent: 'center',
                     overflow: 'hidden',
                     flexShrink: 0,
@@ -155,11 +156,11 @@ export default function ClubsScreen() {
                     {listing.club.name}
                   </Text>
                   {listing.shortDescription ? (
-                    <Text style={{ color: '#9ca3af', fontSize: 13, lineHeight: 18 }}>
+                    <Text style={{ color: FLX.mistDim, fontSize: 13, lineHeight: 18 }}>
                       {listing.shortDescription}
                     </Text>
                   ) : listing.region ? (
-                    <Text style={{ color: '#9ca3af', fontSize: 13 }}>{listing.region}</Text>
+                    <Text style={{ color: FLX.mistDim, fontSize: 13 }}>{listing.region}</Text>
                   ) : null}
                 </View>
 

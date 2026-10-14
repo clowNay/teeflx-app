@@ -71,7 +71,7 @@ export default function HomeScreen() {
   const nextUp = achievements.find(a => !a.unlockedAt)
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#0c0c0c' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: FLX.green }}>
       <ScrollView
         contentContainerStyle={{ paddingHorizontal: 20, paddingVertical: 24 }}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={FLX.gold} />}

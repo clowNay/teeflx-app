@@ -5,6 +5,7 @@ import { useRouter } from 'expo-router'
 import { useState } from 'react'
 import { ActivityIndicator, Pressable, StatusBar, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { FLX } from '@/lib/theme'
 
 interface ScanResult {
   player: {
@@ -50,33 +51,33 @@ export default function ScanScreen() {
 
   if (!permission) {
     return (
-      <View style={{ flex: 1, backgroundColor: '#0c0c0c', alignItems: 'center', justifyContent: 'center' }}>
-        <ActivityIndicator color="#16a34a" size="large" />
+      <View style={{ flex: 1, backgroundColor: FLX.green, alignItems: 'center', justifyContent: 'center' }}>
+        <ActivityIndicator color={FLX.gold} size="large" />
       </View>
     )
   }
 
   if (!permission.granted) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: '#0c0c0c', alignItems: 'center', justifyContent: 'center', paddingHorizontal: 32 }}>
-        <Ionicons name="camera-outline" size={64} color="#6b7280" style={{ marginBottom: 20 }} />
+      <SafeAreaView style={{ flex: 1, backgroundColor: FLX.green, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 32 }}>
+        <Ionicons name="camera-outline" size={64} color={FLX.mistDim} style={{ marginBottom: 20 }} />
         <Text style={{ color: '#fff', fontSize: 20, fontWeight: 'bold', textAlign: 'center', marginBottom: 8 }}>
           Kamera-adgang kræves
         </Text>
-        <Text style={{ color: '#9ca3af', fontSize: 14, textAlign: 'center', marginBottom: 28 }}>
+        <Text style={{ color: FLX.mistDim, fontSize: 14, textAlign: 'center', marginBottom: 28 }}>
           For at scanne TEEFLX membership cards skal vi bruge adgang til kameraet.
         </Text>
         <Pressable
           onPress={requestPermission}
           style={({ pressed }) => ({
-            backgroundColor: '#16a34a', paddingHorizontal: 28, paddingVertical: 14,
+            backgroundColor: FLX.gold, paddingHorizontal: 28, paddingVertical: 14,
             borderRadius: 14, opacity: pressed ? 0.8 : 1,
           })}
         >
-          <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 16 }}>Giv adgang til kamera</Text>
+          <Text style={{ color: FLX.green, fontWeight: 'bold', fontSize: 16 }}>Giv adgang til kamera</Text>
         </Pressable>
         <Pressable onPress={() => router.back()} style={{ marginTop: 20 }}>
-          <Text style={{ color: '#6b7280', fontSize: 14 }}>Gå tilbage</Text>
+          <Text style={{ color: FLX.mistDim, fontSize: 14 }}>Gå tilbage</Text>
         </Pressable>
       </SafeAreaView>
     )
@@ -125,8 +126,8 @@ export default function ScanScreen() {
             }}>
               {loading && (
                 <View style={{ alignItems: 'center', paddingVertical: 20 }}>
-                  <ActivityIndicator color="#16a34a" size="large" />
-                  <Text style={{ color: '#9ca3af', marginTop: 12, fontSize: 15 }}>Henter medlems info…</Text>
+                  <ActivityIndicator color={FLX.gold} size="large" />
+                  <Text style={{ color: FLX.mistDim, marginTop: 12, fontSize: 15 }}>Henter medlems info…</Text>
                 </View>
               )}
 
@@ -140,9 +141,9 @@ export default function ScanScreen() {
                     <Ionicons name="close" size={36} color="#ef4444" />
                   </View>
                   <Text style={{ color: '#ef4444', fontSize: 20, fontWeight: 'bold', marginBottom: 6 }}>Ugyldigt kort</Text>
-                  <Text style={{ color: '#9ca3af', fontSize: 14, textAlign: 'center', marginBottom: 24 }}>{error}</Text>
+                  <Text style={{ color: FLX.mistDim, fontSize: 14, textAlign: 'center', marginBottom: 24 }}>{error}</Text>
                   <Pressable onPress={reset} style={({ pressed }) => ({
-                    backgroundColor: '#1a1a1a', borderRadius: 14,
+                    backgroundColor: FLX.card, borderRadius: 14,
                     paddingHorizontal: 28, paddingVertical: 14, opacity: pressed ? 0.7 : 1,
                   })}>
                     <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 15 }}>Scan igen</Text>
@@ -154,17 +155,17 @@ export default function ScanScreen() {
                 <View style={{ alignItems: 'center' }}>
                   <View style={{
                     width: 72, height: 72, borderRadius: 36,
-                    backgroundColor: result.valid ? '#14532d' : '#7f1d1d',
+                    backgroundColor: result.valid ? FLX.goldTint : '#7f1d1d',
                     alignItems: 'center', justifyContent: 'center', marginBottom: 16,
                   }}>
                     <Ionicons
                       name={result.valid ? 'checkmark' : 'close'}
                       size={40}
-                      color={result.valid ? '#16a34a' : '#ef4444'}
+                      color={result.valid ? FLX.gold : '#ef4444'}
                     />
                   </View>
                   <Text style={{
-                    color: result.valid ? '#16a34a' : '#ef4444',
+                    color: result.valid ? FLX.gold : '#ef4444',
                     fontSize: 22, fontWeight: 'bold', marginBottom: 4,
                   }}>
                     {result.valid ? 'GYLDIGT KORT' : 'UGYLDIGT KORT'}
@@ -172,12 +173,12 @@ export default function ScanScreen() {
                   <Text style={{ color: '#fff', fontSize: 19, fontWeight: 'bold', marginTop: 12 }}>
                     {result.player.name ?? '—'}
                   </Text>
-                  <Text style={{ color: '#9ca3af', fontSize: 14, marginTop: 2 }}>
+                  <Text style={{ color: FLX.mistDim, fontSize: 14, marginTop: 2 }}>
                     {result.player.club?.name ?? '—'}
                   </Text>
                   {result.pass?.season && (
                     <View style={{
-                      backgroundColor: result.valid ? '#16a34a' : '#374151',
+                      backgroundColor: result.valid ? FLX.gold : FLX.line,
                       paddingHorizontal: 14, paddingVertical: 5,
                       borderRadius: 20, marginTop: 12,
                     }}>
@@ -187,7 +188,7 @@ export default function ScanScreen() {
                     </View>
                   )}
                   <View style={{ marginTop: 24 }}>
-                    <Pressable onPress={reset} style={{ backgroundColor: '#1a1a1a', borderRadius: 14, paddingHorizontal: 32, paddingVertical: 14 }}>
+                    <Pressable onPress={reset} style={{ backgroundColor: FLX.card, borderRadius: 14, paddingHorizontal: 32, paddingVertical: 14 }}>
                       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
                         <Ionicons name="qr-code-outline" size={18} color="#fff" />
                         <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 15 }}>Scan næste</Text>

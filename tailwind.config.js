@@ -21,12 +21,21 @@ module.exports = {
           800: '#166534',
           900: '#14532d',
         },
-        surface: {
-          DEFAULT: '#111111',
-          raised: '#1a1a1a',
-          overlay: '#222222',
+        // The golfer web look (same values as lib/theme.ts)
+        flx: {
+          green: '#12301f',
+          card: '#1a3c28',
+          line: '#2b5139',
+          gold: '#e6cf8a',
+          mist: '#d5e1d7',
+          'mist-dim': '#9fb2a4',
         },
-        bg: '#0c0c0c',
+        surface: {
+          DEFAULT: '#1a3c28',
+          raised: '#1a3c28',
+          overlay: '#2b5139',
+        },
+        bg: '#12301f',
       },
     },
   },

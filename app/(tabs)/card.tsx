@@ -5,6 +5,7 @@ import QRCode from 'react-native-qrcode-svg'
 import { Ionicons } from '@expo/vector-icons'
 import { useAuth } from '@/context/AuthContext'
 import { currentPass, cardName, statusLabel } from '@/lib/cards'
+import { FLX } from '@/lib/theme'
 
 export default function CardScreen() {
   const { player } = useAuth()
@@ -25,14 +26,14 @@ export default function CardScreen() {
     <>
       <StatusBar barStyle={bright ? 'dark-content' : 'light-content'} />
       <SafeAreaView
-        style={{ flex: 1, backgroundColor: bright ? '#ffffff' : '#0c0c0c' }}
+        style={{ flex: 1, backgroundColor: bright ? '#ffffff' : FLX.green }}
       >
         <View style={{ flex: 1, paddingHorizontal: 24, paddingTop: 20, paddingBottom: 32 }}>
 
           {/* Header */}
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
             <View>
-              <Text style={{ color: bright ? '#111' : '#9ca3af', fontSize: 11, letterSpacing: 2, textTransform: 'uppercase' }}>
+              <Text style={{ color: bright ? '#111' : FLX.mistDim, fontSize: 11, letterSpacing: 2, textTransform: 'uppercase' }}>
                 Medlemskort
               </Text>
               <Text style={{ color: bright ? '#111' : '#fff', fontSize: 22, fontWeight: 'bold', marginTop: 2 }}>
@@ -43,7 +44,7 @@ export default function CardScreen() {
             <Pressable
               onPress={() => setBright(b => !b)}
               style={{
-                backgroundColor: bright ? '#f3f4f6' : '#1a1a1a',
+                backgroundColor: bright ? '#f3f4f6' : FLX.card,
                 padding: 10,
                 borderRadius: 12,
               }}
@@ -51,14 +52,14 @@ export default function CardScreen() {
               <Ionicons
                 name={bright ? 'sunny' : 'sunny-outline'}
                 size={20}
-                color={bright ? '#f59e0b' : '#9ca3af'}
+                color={bright ? '#f59e0b' : FLX.mistDim}
               />
             </Pressable>
           </View>
 
           {/* Card */}
           <View style={{
-            backgroundColor: bright ? '#fff' : '#111',
+            backgroundColor: bright ? '#fff' : FLX.card,
             borderRadius: 24,
             padding: 28,
             alignItems: 'center',
@@ -70,13 +71,13 @@ export default function CardScreen() {
           }}>
             {/* Status badge */}
             <View style={{
-              backgroundColor: isActive ? '#16a34a' : '#374151',
+              backgroundColor: isActive ? FLX.gold : FLX.line,
               paddingHorizontal: 14,
               paddingVertical: 5,
               borderRadius: 20,
               marginBottom: 24,
             }}>
-              <Text style={{ color: '#fff', fontSize: 11, fontWeight: 'bold', letterSpacing: 1 }}>
+              <Text style={{ color: isActive ? FLX.green : FLX.mist, fontSize: 11, fontWeight: 'bold', letterSpacing: 1 }}>
                 {pass
                   ? `${isActive ? '✓ ' : ''}${cardName(pass)} · ${statusLabel(pass.status)}`.toUpperCase()
                   : 'INTET SÆSONKORT'}
@@ -107,10 +108,10 @@ export default function CardScreen() {
             }}>
               {player?.name ?? '—'}
             </Text>
-            <Text style={{ color: bright ? '#6b7280' : '#9ca3af', fontSize: 14, marginBottom: 2 }}>
+            <Text style={{ color: bright ? '#6b7280' : FLX.mistDim, fontSize: 14, marginBottom: 2 }}>
               {player?.club?.name ?? '—'}
             </Text>
-            <Text style={{ color: bright ? '#9ca3af' : '#6b7280', fontSize: 12, fontFamily: 'monospace' }}>
+            <Text style={{ color: bright ? '#9ca3af' : FLX.mistDim, fontSize: 12, fontFamily: 'monospace' }}>
               {player?.unionId ?? player?.lifetimeId ?? '—'}
             </Text>
           </View>
@@ -119,20 +120,20 @@ export default function CardScreen() {
           {pass && (
             <View style={{
               marginTop: 20,
-              backgroundColor: bright ? '#f9fafb' : '#111',
+              backgroundColor: bright ? '#f9fafb' : FLX.card,
               borderRadius: 16,
               padding: 16,
               flexDirection: 'row',
               justifyContent: 'space-between',
             }}>
               <View>
-                <Text style={{ color: bright ? '#9ca3af' : '#6b7280', fontSize: 11 }}>Gyldig fra</Text>
+                <Text style={{ color: bright ? '#9ca3af' : FLX.mistDim, fontSize: 11 }}>Gyldig fra</Text>
                 <Text style={{ color: bright ? '#111' : '#fff', fontSize: 13, fontWeight: '600' }}>
                   {fmtDate(pass.seasonPass.season?.playStartsAt)}
                 </Text>
               </View>
               <View style={{ alignItems: 'flex-end' }}>
-                <Text style={{ color: bright ? '#9ca3af' : '#6b7280', fontSize: 11 }}>Gyldig til</Text>
+                <Text style={{ color: bright ? '#9ca3af' : FLX.mistDim, fontSize: 11 }}>Gyldig til</Text>
                 <Text style={{ color: bright ? '#111' : '#fff', fontSize: 13, fontWeight: '600' }}>
                   {fmtDate(pass.seasonPass.season?.playEndsAt)}
                 </Text>
@@ -142,7 +143,7 @@ export default function CardScreen() {
 
           {/* Hint */}
           <Text style={{
-            color: bright ? '#9ca3af' : '#4b5563',
+            color: bright ? '#9ca3af' : FLX.mistDim,
             fontSize: 12,
             textAlign: 'center',
             marginTop: 16,

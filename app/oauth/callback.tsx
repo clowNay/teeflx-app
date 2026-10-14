@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { View, Text, ActivityIndicator } from 'react-native'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useAuth } from '@/context/AuthContext'
+import { FLX } from '@/lib/theme'
 
 // This screen is opened via deep link: teeflx://oauth/callback?token=...&state=...
 export default function OAuthCallback() {
@@ -28,8 +29,8 @@ export default function OAuthCallback() {
 
   return (
     <View className="flex-1 bg-bg items-center justify-center gap-4">
-      <ActivityIndicator size="large" color="#16a34a" />
-      <Text className="text-gray-400 text-sm">Logger ind…</Text>
+      <ActivityIndicator size="large" color={FLX.gold} />
+      <Text className="text-flx-mist-dim text-sm">Logger ind…</Text>
     </View>
   )
 }

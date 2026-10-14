@@ -5,9 +5,10 @@ import { Ionicons } from '@expo/vector-icons'
 import { useAuth } from '@/context/AuthContext'
 import { api } from '@/lib/api'
 import type { Achievement } from '@/lib/types'
+import { FLX } from '@/lib/theme'
 
 const ACHIEVEMENT_META: Record<string, { label: string; description: string; icon: string; reward: number }> = {
-  CLUB_EXPLORER:      { label: 'Club Explorer',      description: 'Spil på 5 forskellige klubber',             icon: '🗺️', reward: 250 },
+  CLUB_EXPLORER:      { label: 'Club Explorer',      description: 'Spil på 5 samarbejdsklubber',             icon: '🗺️', reward: 250 },
   SOCIAL_GOLFER:      { label: 'Social Golfer',       description: 'Henvis 3 venner der køber sæsonkort',       icon: '👥', reward: 750 },
   EARLY_BIRD:         { label: 'Early Bird',           description: 'Køb sæsonkort inden 1. marts',              icon: '🌅', reward: 200 },
   GLOBETROTTER:       { label: 'Globetrotter',         description: 'Spil 10 runder på 10 forskellige baner',   icon: '✈️', reward: 200 },
@@ -21,12 +22,12 @@ function AchievementCard({ achievement }: { achievement: Achievement }) {
 
   return (
     <View style={{
-      backgroundColor: '#111',
+      backgroundColor: FLX.card,
       borderRadius: 16,
       padding: 18,
       marginBottom: 10,
       borderWidth: isUnlocked ? 1 : 0,
-      borderColor: isUnlocked ? '#16a34a40' : 'transparent',
+      borderColor: isUnlocked ? FLX.goldSoft : 'transparent',
     }}>
       <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 14 }}>
         {/* Icon */}
@@ -34,7 +35,7 @@ function AchievementCard({ achievement }: { achievement: Achievement }) {
           width: 48,
           height: 48,
           borderRadius: 14,
-          backgroundColor: isUnlocked ? '#14532d' : '#1a1a1a',
+          backgroundColor: isUnlocked ? FLX.goldTint : FLX.card,
           alignItems: 'center',
           justifyContent: 'center',
         }}>
@@ -49,36 +50,36 @@ function AchievementCard({ achievement }: { achievement: Achievement }) {
             </Text>
             {isUnlocked ? (
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-                <Ionicons name="checkmark-circle" size={16} color="#16a34a" />
-                <Text style={{ color: '#16a34a', fontSize: 12, fontWeight: '600' }}>
+                <Ionicons name="checkmark-circle" size={16} color={FLX.gold} />
+                <Text style={{ color: FLX.gold, fontSize: 12, fontWeight: '600' }}>
                   +{achievement.walletCreditAmount ?? meta?.reward ?? 0} DKK
                 </Text>
               </View>
             ) : (
-              <Text style={{ color: '#9ca3af', fontSize: 12 }}>
+              <Text style={{ color: FLX.mistDim, fontSize: 12 }}>
                 +{meta?.reward ?? 0} DKK
               </Text>
             )}
           </View>
 
-          <Text style={{ color: '#9ca3af', fontSize: 13, marginTop: 2, marginBottom: 10 }}>
+          <Text style={{ color: FLX.mistDim, fontSize: 13, marginTop: 2, marginBottom: 10 }}>
             {meta?.description ?? ''}
           </Text>
 
           {/* Progress bar */}
           {!isUnlocked && (
             <>
-              <View style={{ height: 6, backgroundColor: '#1f2937', borderRadius: 3, overflow: 'hidden' }}>
-                <View style={{ width: `${pct}%`, height: '100%', backgroundColor: '#16a34a', borderRadius: 3 }} />
+              <View style={{ height: 6, backgroundColor: FLX.line, borderRadius: 3, overflow: 'hidden' }}>
+                <View style={{ width: `${pct}%`, height: '100%', backgroundColor: FLX.gold, borderRadius: 3 }} />
               </View>
-              <Text style={{ color: '#6b7280', fontSize: 11, marginTop: 5 }}>
+              <Text style={{ color: FLX.mistDim, fontSize: 11, marginTop: 5 }}>
                 {achievement.progress} / {achievement.goal}
               </Text>
             </>
           )}
 
           {isUnlocked && achievement.unlockedAt && (
-            <Text style={{ color: '#4b5563', fontSize: 11 }}>
+            <Text style={{ color: FLX.line, fontSize: 11 }}>
               Låst op {new Date(achievement.unlockedAt).toLocaleDateString('da-DK', { day: '2-digit', month: 'long', year: 'numeric' })}
             </Text>
           )}
@@ -116,21 +117,21 @@ export default function AchievementsScreen() {
   const totalEarned = unlocked.reduce((s, a) => s + (a.walletCreditAmount ?? 0), 0)
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#0c0c0c' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: FLX.green }}>
       <ScrollView
         contentContainerStyle={{ paddingHorizontal: 20, paddingVertical: 24 }}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#16a34a" />}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={FLX.gold} />}
       >
         {/* Header */}
         <Text style={{ color: '#fff', fontSize: 24, fontWeight: 'bold', marginBottom: 4 }}>Præstationer</Text>
-        <Text style={{ color: '#9ca3af', fontSize: 14, marginBottom: 24 }}>
+        <Text style={{ color: FLX.mistDim, fontSize: 14, marginBottom: 24 }}>
           Tjen wallet-kredit ved at nå dine mål
         </Text>
 
         {/* Summary strip */}
         {!loading && (
           <View style={{
-            backgroundColor: '#111',
+            backgroundColor: FLX.card,
             borderRadius: 16,
             padding: 18,
             flexDirection: 'row',
@@ -138,18 +139,18 @@ export default function AchievementsScreen() {
             marginBottom: 24,
           }}>
             <View style={{ alignItems: 'center' }}>
-              <Text style={{ color: '#16a34a', fontSize: 28, fontWeight: 'bold' }}>{unlocked.length}</Text>
-              <Text style={{ color: '#9ca3af', fontSize: 12 }}>Låst op</Text>
+              <Text style={{ color: FLX.gold, fontSize: 28, fontWeight: 'bold' }}>{unlocked.length}</Text>
+              <Text style={{ color: FLX.mistDim, fontSize: 12 }}>Låst op</Text>
             </View>
-            <View style={{ width: 1, backgroundColor: '#1f2937' }} />
+            <View style={{ width: 1, backgroundColor: FLX.line }} />
             <View style={{ alignItems: 'center' }}>
               <Text style={{ color: '#fff', fontSize: 28, fontWeight: 'bold' }}>{achievements.length}</Text>
-              <Text style={{ color: '#9ca3af', fontSize: 12 }}>I alt</Text>
+              <Text style={{ color: FLX.mistDim, fontSize: 12 }}>I alt</Text>
             </View>
-            <View style={{ width: 1, backgroundColor: '#1f2937' }} />
+            <View style={{ width: 1, backgroundColor: FLX.line }} />
             <View style={{ alignItems: 'center' }}>
-              <Text style={{ color: '#16a34a', fontSize: 28, fontWeight: 'bold' }}>{totalEarned}</Text>
-              <Text style={{ color: '#9ca3af', fontSize: 12 }}>DKK tjent</Text>
+              <Text style={{ color: FLX.gold, fontSize: 28, fontWeight: 'bold' }}>{totalEarned}</Text>
+              <Text style={{ color: FLX.mistDim, fontSize: 12 }}>DKK tjent</Text>
             </View>
           </View>
         )}
@@ -157,7 +158,7 @@ export default function AchievementsScreen() {
         {/* Unlocked */}
         {unlocked.length > 0 && (
           <>
-            <Text style={{ color: '#9ca3af', fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 10 }}>
+            <Text style={{ color: FLX.mistDim, fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 10 }}>
               Låst op
             </Text>
             {unlocked.map(a => <AchievementCard key={a.slug} achievement={a} />)}
@@ -168,7 +169,7 @@ export default function AchievementsScreen() {
         {/* In progress */}
         {inProgress.length > 0 && (
           <>
-            <Text style={{ color: '#9ca3af', fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 10 }}>
+            <Text style={{ color: FLX.mistDim, fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 10 }}>
               I gang
             </Text>
             {inProgress.map(a => <AchievementCard key={a.slug} achievement={a} />)}

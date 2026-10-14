@@ -3,6 +3,7 @@ import { Stack, useRouter, useSegments } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
 import { useEffect } from 'react'
 import { AuthProvider, useAuth } from '@/context/AuthContext'
+import { FLX } from '@/lib/theme'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -38,7 +39,7 @@ function AuthGate() {
   }, [isLoading, isAuthenticated, hasPass, segments])
 
   return (
-    <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: '#0c0c0c' } }}>
+    <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: FLX.green } }}>
       <Stack.Screen name="(tabs)" />
       <Stack.Screen name="login" />
       <Stack.Screen name="onboarding" />

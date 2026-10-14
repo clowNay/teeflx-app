@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { useEffect, useState } from 'react'
 import { Alert, Image, Pressable, ScrollView, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { FLX } from '@/lib/theme'
 
 interface SeasonPass {
   id: string
@@ -76,13 +77,13 @@ function PlanCard({ pass, allPasses, seasonEndMonth }: {
   return (
     <View style={{
       flex: 1,
-      backgroundColor: isFull ? '#14532d' : '#1a1a1a',
+      backgroundColor: isFull ? FLX.goldTint : FLX.card,
       borderRadius: 16,
       padding: 16,
       borderWidth: isFull ? 1 : 0,
-      borderColor: '#16a34a',
+      borderColor: FLX.gold,
     }}>
-      <Text style={{ color: isFull ? '#86efac' : '#6b7280', fontSize: 10, fontWeight: 'bold', letterSpacing: 1, textTransform: 'uppercase', marginBottom: 8 }}>
+      <Text style={{ color: isFull ? FLX.gold : FLX.mistDim, fontSize: 10, fontWeight: 'bold', letterSpacing: 1, textTransform: 'uppercase', marginBottom: 8 }}>
         {isSplit ? 'Månedlig' : 'Fuld betaling'}
       </Text>
 
@@ -90,9 +91,9 @@ function PlanCard({ pass, allPasses, seasonEndMonth }: {
         <>
           <Text style={{ color: '#fff', fontSize: 24, fontWeight: 'bold' }}>
             {formatPrice(monthlyPrice)}
-            <Text style={{ color: '#9ca3af', fontSize: 13, fontWeight: 'normal' }}> kr./md</Text>
+            <Text style={{ color: FLX.mistDim, fontSize: 13, fontWeight: 'normal' }}> kr./md</Text>
           </Text>
-          <Text style={{ color: '#6b7280', fontSize: 11, marginTop: 6, lineHeight: 16 }}>
+          <Text style={{ color: FLX.mistDim, fontSize: 11, marginTop: 6, lineHeight: 16 }}>
             {remaining} rater · {formatPrice(splitTotal!)} kr. i alt
           </Text>
         </>
@@ -100,16 +101,16 @@ function PlanCard({ pass, allPasses, seasonEndMonth }: {
         <>
           <Text style={{ color: '#fff', fontSize: 24, fontWeight: 'bold' }}>
             {formatPrice(fullPrice!)}
-            <Text style={{ color: '#9ca3af', fontSize: 13, fontWeight: 'normal' }}> kr.</Text>
+            <Text style={{ color: FLX.mistDim, fontSize: 13, fontWeight: 'normal' }}> kr.</Text>
           </Text>
-          <Text style={{ color: '#86efac', fontSize: 11, marginTop: 6 }}>Én betaling nu</Text>
+          <Text style={{ color: FLX.gold, fontSize: 11, marginTop: 6 }}>Én betaling nu</Text>
           {savings > 0 && (
             <View style={{
               marginTop: 10, alignSelf: 'flex-start',
-              backgroundColor: '#16a34a', borderRadius: 6,
+              backgroundColor: FLX.gold, borderRadius: 6,
               paddingHorizontal: 8, paddingVertical: 3,
             }}>
-              <Text style={{ color: '#fff', fontSize: 10, fontWeight: 'bold' }}>
+              <Text style={{ color: FLX.green, fontSize: 10, fontWeight: 'bold' }}>
                 SPAR {formatPrice(savings)} KR.
               </Text>
             </View>
@@ -151,7 +152,7 @@ export default function OnboardingScreen() {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#0c0c0c' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: FLX.green }}>
       <ScrollView
         contentContainerStyle={{ paddingHorizontal: 24, paddingTop: 32, paddingBottom: 40 }}
         showsVerticalScrollIndicator={false}
@@ -163,14 +164,14 @@ export default function OnboardingScreen() {
             style={{ width: 48, height: 48, borderRadius: 12 }}
           />
           <View>
-            <Text style={{ color: '#9ca3af', fontSize: 13 }}>Velkommen til TEEFLX</Text>
+            <Text style={{ color: FLX.mistDim, fontSize: 13 }}>Velkommen til TEEFLX</Text>
             <Text style={{ color: '#fff', fontSize: 22, fontWeight: 'bold' }}>Hej, {firstName}! 👋</Text>
           </View>
         </View>
 
         {/* Missing pass banner */}
         <View style={{
-          backgroundColor: '#1a1a1a',
+          backgroundColor: FLX.card,
           borderRadius: 16,
           padding: 18,
           flexDirection: 'row',
@@ -178,11 +179,11 @@ export default function OnboardingScreen() {
           gap: 14,
           marginBottom: 28,
           borderWidth: 1,
-          borderColor: '#2d2d2d',
+          borderColor: FLX.line,
         }}>
           <View style={{
             width: 44, height: 44, borderRadius: 12,
-            backgroundColor: '#292524',
+            backgroundColor: FLX.line,
             alignItems: 'center', justifyContent: 'center',
             flexShrink: 0,
           }}>
@@ -192,28 +193,28 @@ export default function OnboardingScreen() {
             <Text style={{ color: '#fff', fontWeight: '600', fontSize: 15, marginBottom: 2 }}>
               Intet aktivt sæsonkort
             </Text>
-            <Text style={{ color: '#9ca3af', fontSize: 13, lineHeight: 18 }}>
+            <Text style={{ color: FLX.mistDim, fontSize: 13, lineHeight: 18 }}>
               Du skal købe et sæsonkort for at spille i samarbejdsklubberne.
             </Text>
           </View>
         </View>
 
         {/* What you get */}
-        <Text style={{ color: '#6b7280', fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 14 }}>
+        <Text style={{ color: FLX.mistDim, fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 14 }}>
           Hvad du får
         </Text>
-        <View style={{ backgroundColor: '#111', borderRadius: 16, padding: 18, marginBottom: 28, gap: 14 }}>
+        <View style={{ backgroundColor: FLX.card, borderRadius: 16, padding: 18, marginBottom: 28, gap: 14 }}>
           {PERKS.map((perk, i) => (
             <View key={i} style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
               <View style={{
                 width: 36, height: 36, borderRadius: 10,
-                backgroundColor: '#14532d',
+                backgroundColor: FLX.goldTint,
                 alignItems: 'center', justifyContent: 'center',
                 flexShrink: 0,
               }}>
-                <Ionicons name={perk.icon} size={18} color="#16a34a" />
+                <Ionicons name={perk.icon} size={18} color={FLX.gold} />
               </View>
-              <Text style={{ color: '#d1d5db', fontSize: 14, flex: 1 }}>{perk.label}</Text>
+              <Text style={{ color: FLX.mist, fontSize: 14, flex: 1 }}>{perk.label}</Text>
             </View>
           ))}
         </View>
@@ -221,7 +222,7 @@ export default function OnboardingScreen() {
         {/* Plans */}
         {passes.length > 0 && (
           <>
-            <Text style={{ color: '#6b7280', fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 14 }}>
+            <Text style={{ color: FLX.mistDim, fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 14 }}>
               Tilgængelige sæsonkort
             </Text>
             <View style={{ flexDirection: 'row', gap: 10, marginBottom: 28 }}>
@@ -235,15 +236,15 @@ export default function OnboardingScreen() {
         {/* CTA */}
         <Pressable
           onPress={handleSignup}
-          className="bg-green-700 rounded-2xl py-4 flex-row items-center justify-center gap-2 mb-3 active:opacity-75"
+          className="bg-flx-gold rounded-full py-4 flex-row items-center justify-center gap-2 mb-3 active:opacity-75"
         >
-          <Text className="text-white font-bold text-base">
+          <Text className="text-flx-green font-bold text-base">
             Køb sæsonkort på teeflx.com
           </Text>
-          <Ionicons name="arrow-up-right-box-outline" size={20} color="#fff" />
+          <Ionicons name="open-outline" size={20} color={FLX.green} />
         </Pressable>
 
-        <Text className="text-gray-600 text-xs text-center mb-6">
+        <Text className="text-flx-mist-dim text-xs text-center mb-6">
           Genstart appen efter køb for at aktivere dit kort.
         </Text>
 
@@ -252,7 +253,7 @@ export default function OnboardingScreen() {
           className='flex-row items-center justify-center'
           style={({ pressed }) => ({ alignItems: 'center', opacity: pressed ? 0.6 : 1 })}
         >
-          <Text style={{ color: '#4b5563', fontSize: 13 }}>Log ud</Text>
+          <Text style={{ color: FLX.line, fontSize: 13 }}>Log ud</Text>
         </Pressable>
       </ScrollView>
     </SafeAreaView>

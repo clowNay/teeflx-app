@@ -11,7 +11,7 @@
     "splash": {
       "image": "./assets/images/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#0c0c0c"
+      "backgroundColor": "#12301f"
     },
     "ios": {
       "supportsTablet": false,
@@ -23,7 +23,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#0c0c0c"
+        "backgroundColor": "#12301f"
       },
       "edgeToEdgeEnabled": true,
       "package": "com.teeflx.app"
