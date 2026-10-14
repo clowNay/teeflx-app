@@ -1,12 +1,10 @@
 import { useAuth } from '@/context/AuthContext'
-import { api, PRODUCTION_API_HOST } from '@/lib/api'
+import { api } from '@/lib/api'
+import { openGolferWeb } from '@/lib/web'
 import { Ionicons } from '@expo/vector-icons'
-import * as WebBrowser from 'expo-web-browser'
 import { useEffect, useState } from 'react'
 import { Alert, Image, Pressable, ScrollView, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-
-const CHECKOUT_URL = 'https://www.teeflx.com/checkout'
 
 interface SeasonPass {
   id: string
@@ -140,36 +138,9 @@ export default function OnboardingScreen() {
       .catch(() => {})
   }, [player?.unionId])
 
+  // Checkout on golfer web, logged in through the handoff (lib/web.ts)
   async function handleSignup() {
-    let url = CHECKOUT_URL
-
-    // Mint a short-lived handoff token so the web app can log the player in
-    // automatically — they're already authenticated here, no need to go
-    // through DGU OAuth again.
-    try {
-      const token = player?.dguAccessToken
-      if (token) {
-        // Always hit the production API — the web checkout exchanges the token
-        // there, so the mint must happen on the same server instance.
-        const res = await fetch(`${PRODUCTION_API_HOST}/oauth/handoff`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({}),
-        })
-        const { handoffToken } = await res.json() as { handoffToken: string }
-        url = `${CHECKOUT_URL}?handoff=${handoffToken}`
-      }
-    } catch {
-      // Failed to mint token — open checkout without auto-login.
-      // The player will see the normal login prompt.
-    }
-
-    await WebBrowser.openBrowserAsync(url, {
-      presentationStyle: WebBrowser.WebBrowserPresentationStyle.FORM_SHEET,
-    })
+    await openGolferWeb('/checkout')
   }
 
   function handleSignOut() {
