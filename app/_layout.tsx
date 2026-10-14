@@ -4,6 +4,9 @@ import * as SplashScreen from 'expo-splash-screen'
 import { useEffect } from 'react'
 import { AuthProvider, useAuth } from '@/context/AuthContext'
 import { FLX } from '@/lib/theme'
+import { useFonts } from 'expo-font'
+import { Barlow_400Regular, Barlow_500Medium, Barlow_600SemiBold, Barlow_700Bold } from '@expo-google-fonts/barlow'
+import { BarlowCondensed_800ExtraBold } from '@expo-google-fonts/barlow-condensed'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -50,6 +53,13 @@ function AuthGate() {
 }
 
 export default function RootLayout() {
+  // The TEEFLX fonts (components/Text.tsx picks the face); the splash stays up until they load
+  const [fontsLoaded] = useFonts({
+    Barlow_400Regular, Barlow_500Medium, Barlow_600SemiBold, Barlow_700Bold,
+    BarlowCondensed_800ExtraBold,
+  })
+  if (!fontsLoaded) return null
+
   return (
     <AuthProvider>
       <AuthGate />

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { View, Text, ScrollView, TextInput, Pressable, RefreshControl, Image } from 'react-native'
+import { View, ScrollView, TextInput, Pressable, RefreshControl, Image } from 'react-native'
+import { Text } from '@/components/Text'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Ionicons } from '@expo/vector-icons'
 import { api } from '@/lib/api'

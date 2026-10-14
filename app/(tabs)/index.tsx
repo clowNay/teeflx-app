@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { View, Text, ScrollView, Pressable, RefreshControl } from 'react-native'
+import { View, ScrollView, Pressable, RefreshControl } from 'react-native'
+import { Text } from '@/components/Text'
 import { useRouter } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -113,12 +114,12 @@ export default function HomeScreen() {
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <View>
               <Text style={{ color: FLX.mistDim, fontSize: 11 }}>Spiller</Text>
-              <Text style={{ color: '#fff', fontWeight: '600' }}>{player?.name ?? '—'}</Text>
+              <Text style={{ color: '#fff', fontWeight: '600', marginTop: 2 }}>{player?.name ?? '—'}</Text>
             </View>
             {pass?.seasonPass.season && (
               <View style={{ alignItems: 'flex-end' }}>
                 <Text style={{ color: FLX.mistDim, fontSize: 11 }}>Sæson</Text>
-                <Text style={{ color: '#fff', fontWeight: '600' }}>{pass.seasonPass.season.year}</Text>
+                <Text style={{ color: '#fff', fontWeight: '600', marginTop: 2 }}>{pass.seasonPass.season.year}</Text>
               </View>
             )}
           </View>
@@ -226,7 +227,7 @@ export default function HomeScreen() {
             style={{ backgroundColor: FLX.card, borderWidth: 1, borderColor: FLX.line, borderRadius: 16, padding: 20, marginBottom: 12 }}
           >
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
-              <Text style={{ color: '#fff', fontWeight: '600' }}>Præstationer</Text>
+              <Text style={{ color: '#fff', fontWeight: '600', marginTop: 2 }}>Præstationer</Text>
               <Text style={{ color: FLX.gold, fontSize: 12, fontWeight: '600' }}>
                 {unlocked.length}/{achievements.length} låst op
               </Text>

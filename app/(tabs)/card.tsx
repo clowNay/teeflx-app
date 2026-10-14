@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { View, Text, Pressable, StatusBar } from 'react-native'
+import { View, Pressable, StatusBar } from 'react-native'
+import { Text } from '@/components/Text'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import QRCode from 'react-native-qrcode-svg'
 import { Ionicons } from '@expo/vector-icons'

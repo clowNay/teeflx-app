@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
-import { View, Text, ActivityIndicator } from 'react-native'
+import { View, ActivityIndicator } from 'react-native'
+import { Text } from '@/components/Text'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useAuth } from '@/context/AuthContext'
 import { FLX } from '@/lib/theme'

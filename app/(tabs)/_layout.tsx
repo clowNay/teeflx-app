@@ -31,7 +31,8 @@ export default function TabLayout() {
         },
         tabBarLabelStyle: {
           fontSize: 10,
-          fontWeight: '600',
+          fontFamily: 'Barlow_600SemiBold',
+          fontWeight: 'normal',
           marginBottom: 4,
         },
         tabBarActiveTintColor: FLX.gold,

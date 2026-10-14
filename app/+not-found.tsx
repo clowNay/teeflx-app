@@ -1,5 +1,6 @@
 import { Link, Stack } from 'expo-router'
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
+import { Text } from '@/components/Text'
 import { FLX } from '@/lib/theme'
 
 export default function NotFoundScreen() {

@@ -1,7 +1,8 @@
 import { API_HOST } from '@/lib/api'
 import { useRouter } from 'expo-router'
 import * as WebBrowser from 'expo-web-browser'
-import { Image, Pressable, Text, View } from 'react-native'
+import { Image, Pressable, View } from 'react-native'
+import { Text } from '@/components/Text'
 import { FLX } from '@/lib/theme'
 
 WebBrowser.maybeCompleteAuthSession()
@@ -29,7 +30,6 @@ export default function LoginScreen() {
           source={require('@/assets/images/icon.png')}
           style={{ width: 88, height: 88, borderRadius: 20 }}
         />
-        <Text style={{ color: '#fff', fontSize: 28, fontWeight: 'bold', letterSpacing: 4 }}>TEEFLX</Text>
         <Text style={{ color: FLX.mistDim, fontSize: 15, textAlign: 'center' }}>
           Dit digitale sæsonkort til alle{'\n'}samarbejdsklubber
         </Text>
