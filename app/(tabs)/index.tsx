@@ -87,7 +87,7 @@ export default function HomeScreen() {
         <View style={{
           borderRadius: 16,
           overflow: 'hidden',
-          marginBottom: 12,
+          marginBottom: 20,
           backgroundColor: FLX.green,
           borderWidth: 1,
           borderColor: isActive ? FLX.gold : FLX.line,
@@ -127,7 +127,7 @@ export default function HomeScreen() {
 
         {/* Rounds on the card */}
         {pass && (
-          <View style={{ backgroundColor: FLX.card, borderWidth: 1, borderColor: FLX.line, borderRadius: 16, padding: 20, marginBottom: 12 }}>
+          <View style={{ backgroundColor: FLX.card, borderWidth: 1, borderColor: FLX.line, borderRadius: 16, padding: 20, marginBottom: 20 }}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
               <Text style={{ color: FLX.mistDim, fontSize: 11, letterSpacing: 2, textTransform: 'uppercase' }}>Runder</Text>
               <Ionicons name="golf-outline" size={18} color={FLX.gold} />
@@ -193,7 +193,7 @@ export default function HomeScreen() {
         )}
 
         {/* Show card CTA */}
-        <View style={{ marginBottom: 12 }}>
+        <View style={{ marginBottom: 20 }}>
           <Pressable
             onPress={() => router.push('/(tabs)/card')}
             style={{ backgroundColor: FLX.gold, borderRadius: 999, paddingVertical: 16, alignItems: 'center' }}
@@ -206,7 +206,7 @@ export default function HomeScreen() {
         </View>
 
         {/* Wallet */}
-        <View style={{ backgroundColor: FLX.card, borderWidth: 1, borderColor: FLX.line, borderRadius: 16, padding: 20, marginBottom: 12 }}>
+        <View style={{ backgroundColor: FLX.card, borderWidth: 1, borderColor: FLX.line, borderRadius: 16, padding: 20, marginBottom: 20 }}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
             <Text style={{ color: FLX.mistDim, fontSize: 11, letterSpacing: 2, textTransform: 'uppercase' }}>Wallet</Text>
             <Ionicons name="wallet-outline" size={18} color={FLX.gold} />
@@ -224,7 +224,7 @@ export default function HomeScreen() {
         {achievements.length > 0 && (
           <Pressable
             onPress={() => router.push('/(tabs)/achievements')}
-            style={{ backgroundColor: FLX.card, borderWidth: 1, borderColor: FLX.line, borderRadius: 16, padding: 20, marginBottom: 12 }}
+            style={{ backgroundColor: FLX.card, borderWidth: 1, borderColor: FLX.line, borderRadius: 16, padding: 20, marginBottom: 20 }}
           >
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
               <Text style={{ color: '#fff', fontWeight: '600', marginTop: 2 }}>Præstationer</Text>
