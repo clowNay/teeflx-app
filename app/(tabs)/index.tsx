@@ -5,7 +5,8 @@ import { Ionicons } from '@expo/vector-icons'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useAuth } from '@/context/AuthContext'
 import { api } from '@/lib/api'
-import type { Achievement } from '@/lib/types'
+import type { Achievement, RoundLedger } from '@/lib/types'
+import { currentPass, cardName, statusLabel, formatDay, formatRounds } from '@/lib/cards'
 
 const ACHIEVEMENT_LABELS: Record<string, string> = {
   CLUB_EXPLORER:      'Club Explorer',
@@ -20,6 +21,7 @@ export default function HomeScreen() {
   const router = useRouter()
 
   const [achievements, setAchievements] = useState<Achievement[]>([])
+  const [ledger, setLedger] = useState<RoundLedger | null>(null)
   const [refreshing, setRefreshing] = useState(false)
 
   async function loadAchievements() {
@@ -30,16 +32,31 @@ export default function HomeScreen() {
     } catch {}
   }
 
+  // Rounds on the card for the season on sale: allowance, played, booked, left
+  async function loadLedger() {
+    if (!player?.lifetimeId) return
+    try {
+      setLedger(await api.get<RoundLedger | null>(`/v2/players/account/${player.lifetimeId}/round-ledger`))
+    } catch {
+      setLedger(null)
+    }
+  }
+
   async function onRefresh() {
     setRefreshing(true)
-    await Promise.all([refreshAuth(), loadAchievements()])
+    await Promise.all([refreshAuth(), loadAchievements(), loadLedger()])
     setRefreshing(false)
   }
 
   useEffect(() => { loadAchievements() }, [player?.id])
+  useEffect(() => { loadLedger() }, [player?.lifetimeId])
 
-  const pass = player?.playerSeasonPasses?.[0]
+  const pass = currentPass(player?.playerSeasonPasses)
   const isActive = pass?.status === 'ACTIVE'
+  // The ledger belongs to the card for the season on sale, which may not be the card shown
+  const passLedger = ledger && pass && ledger.cardId === pass.id ? ledger : null
+  const unlimited = pass ? (passLedger ? passLedger.unlimited : pass.roundsIncluded === null) : false
+  const notStarted = !!pass?.seasonPass.season && new Date(pass.seasonPass.season.playStartsAt) > new Date()
   const firstName = player?.name?.split(' ')[0] ?? 'Golfer'
   const hour = new Date().getHours()
   const greeting = hour < 12 ? 'God morgen' : hour < 18 ? 'Goddag' : 'God aften'
@@ -71,7 +88,7 @@ export default function HomeScreen() {
             <View>
               <Text style={{ color: '#9ca3af', fontSize: 11, letterSpacing: 2, textTransform: 'uppercase' }}>Sæsonkort</Text>
               <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginTop: 4 }}>
-                {player?.club?.name ?? '—'}
+                {pass ? cardName(pass) : 'Intet sæsonkort'}
               </Text>
             </View>
             <View style={{
@@ -81,7 +98,7 @@ export default function HomeScreen() {
               borderRadius: 20,
             }}>
               <Text style={{ color: '#fff', fontSize: 11, fontWeight: 'bold' }}>
-                {isActive ? 'AKTIV' : pass ? pass.status : 'AFVENTER'}
+                {statusLabel(pass?.status).toUpperCase()}
               </Text>
             </View>
           </View>
@@ -90,14 +107,61 @@ export default function HomeScreen() {
               <Text style={{ color: '#9ca3af', fontSize: 11 }}>Spiller</Text>
               <Text style={{ color: '#fff', fontWeight: '600' }}>{player?.name ?? '—'}</Text>
             </View>
-            {pass?.season && (
+            {pass?.seasonPass.season && (
               <View style={{ alignItems: 'flex-end' }}>
                 <Text style={{ color: '#9ca3af', fontSize: 11 }}>Sæson</Text>
-                <Text style={{ color: '#fff', fontWeight: '600' }}>{pass.season.year}</Text>
+                <Text style={{ color: '#fff', fontWeight: '600' }}>{pass.seasonPass.season.year}</Text>
               </View>
             )}
           </View>
         </View>
+
+        {/* Rounds on the card */}
+        {pass && (
+          <View style={{ backgroundColor: '#111', borderRadius: 16, padding: 20, marginBottom: 12 }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+              <Text style={{ color: '#9ca3af', fontSize: 11, letterSpacing: 2, textTransform: 'uppercase' }}>Runder</Text>
+              <Ionicons name="golf-outline" size={18} color="#16a34a" />
+            </View>
+            {unlimited ? (
+              <>
+                <Text style={{ color: '#fff', fontSize: 24, fontWeight: 'bold' }}>Ubegrænset spil</Text>
+                <Text style={{ color: '#6b7280', fontSize: 12, marginTop: 4 }}>
+                  {notStarted ? `Fra ${formatDay(pass.seasonPass.season?.playStartsAt)}` : 'Book i GolfBox på alle vores samarbejdsklubber'}
+                </Text>
+              </>
+            ) : passLedger && passLedger.allowance !== null ? (
+              <>
+                <Text style={{ color: '#fff', fontSize: 32, fontWeight: 'bold' }}>
+                  {passLedger.remaining ?? 0}
+                  <Text style={{ color: '#9ca3af', fontSize: 18 }}> af {passLedger.allowance} tilbage</Text>
+                </Text>
+                {/* Played rounds, then booked ones in a lighter green */}
+                <View style={{ height: 6, borderRadius: 3, backgroundColor: '#374151', marginTop: 12, overflow: 'hidden', flexDirection: 'row' }}>
+                  <View style={{ height: 6, backgroundColor: passLedger.exhausted ? '#f59e0b' : '#16a34a', width: `${Math.min(100, (passLedger.played / Math.max(1, passLedger.allowance)) * 100)}%` }} />
+                  <View style={{ height: 6, backgroundColor: '#166534', width: `${Math.max(0, Math.min(100 - (passLedger.played / Math.max(1, passLedger.allowance)) * 100, (passLedger.upcoming / Math.max(1, passLedger.allowance)) * 100))}%` }} />
+                </View>
+                <Text style={{ color: '#6b7280', fontSize: 12, marginTop: 8 }}>
+                  {notStarted
+                    ? `Dine runder kan bruges fra ${formatDay(pass.seasonPass.season?.playStartsAt)}`
+                    : `${formatRounds(passLedger.played)} spillet · ${formatRounds(passLedger.upcoming)} booket`}
+                </Text>
+                {passLedger.overBooked > 0 && (
+                  <Text style={{ color: '#f59e0b', fontSize: 12, marginTop: 8 }}>
+                    Du har booket {formatRounds(passLedger.overBooked)} mere, end du har tilbage. De koster almindelig greenfee.
+                  </Text>
+                )}
+                {passLedger.exhausted && passLedger.overBooked === 0 && (
+                  <Text style={{ color: '#f59e0b', fontSize: 12, marginTop: 8 }}>
+                    Dine runder er brugt. Næste runde koster almindelig greenfee, medmindre du køber en ekstra runde eller opgraderer.
+                  </Text>
+                )}
+              </>
+            ) : (
+              <Text style={{ color: '#6b7280', fontSize: 13 }}>Runderne vises, når dit kort er betalt.</Text>
+            )}
+          </View>
+        )}
 
         {/* Show card CTA */}
         <View style={{ marginBottom: 12 }}>

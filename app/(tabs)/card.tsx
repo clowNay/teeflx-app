@@ -4,12 +4,13 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import QRCode from 'react-native-qrcode-svg'
 import { Ionicons } from '@expo/vector-icons'
 import { useAuth } from '@/context/AuthContext'
+import { currentPass, cardName, statusLabel } from '@/lib/cards'
 
 export default function CardScreen() {
   const { player } = useAuth()
   const [bright, setBright] = useState(false)
 
-  const pass = player?.playerSeasonPasses?.[0]
+  const pass = currentPass(player?.playerSeasonPasses)
   const isActive = pass?.status === 'ACTIVE'
 
   // QR payload: player unionId (what clubs scan at check-in)
@@ -17,7 +18,7 @@ export default function CardScreen() {
 
   function fmtDate(iso: string | null | undefined) {
     if (!iso) return '—'
-    return new Date(iso).toLocaleDateString('da-DK', { day: '2-digit', month: 'long', year: 'numeric' })
+    return new Date(iso).toLocaleDateString('da-DK', { day: '2-digit', month: 'long', year: 'numeric', timeZone: 'Europe/Copenhagen' })
   }
 
   return (
@@ -76,7 +77,9 @@ export default function CardScreen() {
               marginBottom: 24,
             }}>
               <Text style={{ color: '#fff', fontSize: 11, fontWeight: 'bold', letterSpacing: 1 }}>
-                {isActive ? '✓ AKTIV SÆSON ' + (pass?.season?.year ?? '') : 'INAKTIV'}
+                {pass
+                  ? `${isActive ? '✓ ' : ''}${cardName(pass)} · ${statusLabel(pass.status)}`.toUpperCase()
+                  : 'INTET SÆSONKORT'}
               </Text>
             </View>
 
@@ -125,13 +128,13 @@ export default function CardScreen() {
               <View>
                 <Text style={{ color: bright ? '#9ca3af' : '#6b7280', fontSize: 11 }}>Gyldig fra</Text>
                 <Text style={{ color: bright ? '#111' : '#fff', fontSize: 13, fontWeight: '600' }}>
-                  {fmtDate(pass.season?.startDate)}
+                  {fmtDate(pass.seasonPass.season?.playStartsAt)}
                 </Text>
               </View>
               <View style={{ alignItems: 'flex-end' }}>
                 <Text style={{ color: bright ? '#9ca3af' : '#6b7280', fontSize: 11 }}>Gyldig til</Text>
                 <Text style={{ color: bright ? '#111' : '#fff', fontSize: 13, fontWeight: '600' }}>
-                  {fmtDate(pass.season?.endDate)}
+                  {fmtDate(pass.seasonPass.season?.playEndsAt)}
                 </Text>
               </View>
             </View>

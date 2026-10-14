@@ -20,26 +20,45 @@ export interface Club {
   golfboxId: string | null
 }
 
+// A golfer's card, as /oauth/me returns it (the season sits on the season pass)
 export interface PlayerSeasonPass {
   id: string
   status: string
-  season: Season
-  plan: Plan
-  paidAt: string | null
-  expiresAt: string | null
+  // Rounds for this card (null = unlimited)
+  roundsIncluded: number | null
+  seasonPass: SeasonPass
+}
+
+export interface SeasonPass {
+  id: string
+  name: string
+  title: string | null
+  // Rounds for a full season (null = unlimited)
+  roundsIncluded: number | null
+  season: Season | null
 }
 
 export interface Season {
   id: string
   year: number
-  startDate: string
-  endDate: string
+  playStartsAt: string
+  playEndsAt: string
 }
 
-export interface Plan {
-  id: string
-  name: string
-  price: number
+// GET /v2/players/account/:lifetimeId/round-ledger: the rounds on the card for the season on sale
+export interface RoundLedger {
+  seasonYear: number
+  cardId: string
+  // Rounds the card allows (included + extra), null = unlimited
+  allowance: number | null
+  played: number
+  upcoming: number
+  remaining: number | null
+  // Upcoming bookings beyond what is left; GolfBox charges normal greenfee for these
+  overBooked: number
+  exhausted: boolean
+  unlimited: boolean
+  extraRoundPrice: { value: string; currency: string } | null
 }
 
 export interface Achievement {

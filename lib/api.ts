@@ -1,7 +1,9 @@
 import * as SecureStore from 'expo-secure-store'
 import { Platform } from 'react-native'
 
-const API_HOST = 'https://api.teeflx.com'
+// Production unless EXPO_PUBLIC_API_HOST is set when the bundle is built,
+// e.g. EXPO_PUBLIC_API_HOST=http://localhost:12500 for a local API
+const API_HOST = process.env.EXPO_PUBLIC_API_HOST || 'https://api.teeflx.com'
 
 // The handoff token must always be minted on the production API because the
 // web checkout always exchanges it against production — regardless of which
