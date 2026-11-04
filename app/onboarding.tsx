@@ -125,9 +125,7 @@ function PlanCard({ pass, allPasses, seasonEndMonth }: {
 export default function OnboardingScreen() {
   const { player, signOut } = useAuth()
   const [seasonData, setSeasonData] = useState<SeasonResponse | null>(null)
-  // A card paid up front is the same card as the monthly one (same title); chosen on golfer web
-  const allPasses = seasonData?.seasonPasses ?? []
-  const passes = allPasses.filter(p => !(p.type === 'FULL' && allPasses.some(m => m.type === 'SPLIT' && m.title === p.title)))
+  const passes = seasonData?.seasonPasses ?? []
   const seasonEndMonth = seasonData?.season?.playEndsAt
     ? new Date(seasonData.season.playEndsAt).getMonth()
     : 9 // fallback: October
